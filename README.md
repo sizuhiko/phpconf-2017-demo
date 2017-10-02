@@ -5,6 +5,7 @@
 - PHPユニットを実行する（成功/失敗)
 - Assetファイルに変更があったら自動的にコンパイルする、Webサーバー
 - カスタムタスクで呼び出しシーケンスの確認。ロールバック
+- Jenkinsと連携する
 
 # はじめに
 
@@ -79,3 +80,20 @@ RoboFileからは、この trait を use して、taskXxx のようなメソッ�
 
 このデモでは `custom` という composer script を追加したので、
 `composer custom` またANSIの色付け表示したい場合は `composer custom -- --ansi` のように実行します。
+
+# Jenkins と連携する
+
+Dockerfile からイメージをビルドして起動します。
+
+- イメージビルドして実行する方法: `composer jenkins -- --with-build`
+- ビルド済みのイメージを実行する方法: `composer jenkins`
+
+jenkinsを起動したら `http://localhost:8080` へブラウザからアクセスします。
+
+最初にアクセスすると、Jenkinsの設定画面が出るので、各画面でインストール作業を継続します。
+
+- `Unlock Jenkins` 画面で `/var/jenkins_home/secrets/initialAdminPassword` のパスワードを入力するように求められるので、 `cat .jenkins/secrets/initialAdminPassword` を実行して、表示されたものを画面にコピペします
+- `Customize Jenkins` 画面で `Install suggesed plugins` を選択します
+- `Create First Admin User` 画面ですべての項目を入力します
+- `Jenkins is ready!` 画面が表示されたらインストールは完了です
+

@@ -11,7 +11,7 @@ class RoboFile extends \Robo\Tasks
   /**
    * PHPUnitのテストを実行するデモ
    *
-   * このコマンドは、PHPカンファレンス関西2017のRoboデモ用で、PHPUnitを実行します。
+   * このコマンドは、PHPカンファレンス2017のRoboデモ用で、PHPUnitを実行します。
    *
    * @param array $opts コマンド引数
    * @option $force-fail  失敗するテストを実行する場合に指定する
@@ -28,7 +28,7 @@ class RoboFile extends \Robo\Tasks
   /**
    * PHPサーバーを実行しAssetの変更を監視するデモ
    *
-   * このコマンドは、PHPカンファレンス関西2017のRoboデモ用で、PHPサーバーを非同期で実行しAssetファイルに変更があったらコンパイルを実行します。
+   * このコマンドは、PHPカンファレンス2017のRoboデモ用で、PHPサーバーを非同期で実行しAssetファイルに変更があったらコンパイルを実行します。
    */
   function start()
   {
@@ -52,7 +52,7 @@ class RoboFile extends \Robo\Tasks
   /**
    * Assetのコンパイルを実行するデモ
    *
-   * このコマンドは、PHPカンファレンス関西2017のRoboデモ用で、assetsのscssファイルをpublicのcssへコンパイルします。
+   * このコマンドは、PHPカンファレンス2017のRoboデモ用で、assetsのscssファイルをpublicのcssへコンパイルします。
    */
   function assetCompile()
   {
@@ -63,7 +63,7 @@ class RoboFile extends \Robo\Tasks
   /**
    * カスタムタスクを使った呼び出しシーケンスを確認するデモ
    *
-   * このコマンドは、PHPカンファレンス関西2017のRoboデモ用で、カスタムタスクを使ってタスクチェインしたときの流れを確認します。
+   * このコマンドは、PHPカンファレンス2017のRoboデモ用で、カスタムタスクを使ってタスクチェインしたときの流れを確認します。
    */
   function custom()
   {
@@ -77,5 +77,26 @@ class RoboFile extends \Robo\Tasks
         ->completion($this->taskPrint('３番目のタスクが完了した'));
 
     return $collection;
+  }
+
+  /**
+   * ローカルでJenkinsを起動するデモ
+   *
+   * このコマンドは、PHPカンファレンス2017のRoboデモ用で、Dockerfileをビルドしてローカルで実行します。
+   */
+  function jenkinsLocal($opts = ['with-build' => true])
+  {
+    if ($opts['with-build']) {
+      $this->taskDockerBuild()
+        ->tag('jenkins/local')
+        ->run();
+    }
+    $result = $this->taskDockerRun('jenkins/local')
+      ->volume(__DIR__.'/.jenkins', '/var/jenkins_home')
+      ->detached()
+      ->publish(8080, 8080)
+      ->publish(50000, 50000)
+      ->run();
+    $this->say("Jenkinsのコンテナを起動しました。コンテナID:".$result['cid']);
   }
 }

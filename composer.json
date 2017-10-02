@@ -26,6 +26,7 @@
       "robo": "robo",
       "test": "robo test",
       "start": "robo start",
-      "custom": "robo custom"
+      "custom": "robo custom",
+      "jenkins": "robo jenkins:local"
     }
 }
