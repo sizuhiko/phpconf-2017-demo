@@ -13,11 +13,16 @@ curl git ant php-mbstring \
 # Create a Jenkins "HOME" for composer files.
 RUN mkdir -p /home/jenkins/composer
 RUN chown -R jenkins:jenkins /home/jenkins
+
 # Install composer.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/  --filename=composer
 
 # Go back to jenkins user.
 USER jenkins
+
+# Setting composer.
+RUN composer config -g repositories.packagist composer https://packagist.jp
+RUN composer global require hirak/prestissimo
 
 # install Jenkins plugins
 RUN /usr/local/bin/install-plugins.sh checkstyle cloverphp crap4j dry htmlpublisher jdepend plot pmd violations warnings xunit slack junit
