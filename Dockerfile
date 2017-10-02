@@ -1,13 +1,24 @@
 FROM jenkins/jenkins:lts
 # if we want to install via apt
 USER root
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils && \
+  apt-get install -y software-properties-common && \
+  add-apt-repository -y ppa:ondrej/php && \
+  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 # install php requirements
 RUN apt-get update && \
-apt-get install -y php php-cli php-xsl \
-php-json php-curl php-mysqlnd \
-php-xdebug php-intl php-mcrypt php-pear \
-curl git ant php-mbstring \
+apt-get install -y php7.1-cli \
+  php7.1-intl \
+  php7.1-mcrypt \
+  php7.1-mysql \
+  php7.1-curl \
+  php7.1-sqlite3 \
+  php7.1-xsl \
+  php7.1-common \
+  php7.1-bz2 \
+  php7.1-mbstring \
+  php7.1-zip \
+  php7.1-json \
 && apt-get clean -y
 
 # Create a Jenkins "HOME" for composer files.
