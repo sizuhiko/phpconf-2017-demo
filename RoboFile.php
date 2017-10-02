@@ -22,6 +22,7 @@ class RoboFile extends \Robo\Tasks
     $this->taskPHPUnit()
       ->file('tests/'.$testFile.'.php')
       ->optionList('colors', 'always', '=')
+      ->xml('test-results.xml')
       ->run();
   }
 

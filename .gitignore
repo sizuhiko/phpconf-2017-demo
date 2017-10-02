@@ -8,3 +8,4 @@ composer.phar
 public/main.css
 
 .jenkins/*
+test-results.xml
